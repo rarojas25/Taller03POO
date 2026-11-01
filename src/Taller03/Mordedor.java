@@ -1,5 +1,5 @@
 package Taller03;
 
-public interface Modedor {
+public interface Mordedor {
 	String morder();
 }
