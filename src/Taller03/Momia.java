@@ -3,9 +3,9 @@ package Taller03;
 public class Momia extends Monstruo implements Regenerable, Furioso{
 	private int longitudVendajes;
 
-	public Momia(String tipo, int vida, int velocidad, int fuerza, int resistencia, boolean usado,
+	public Momia(int vida, int velocidad, int fuerza, int resistencia,
 			int logitudVendajes) {
-		super("Momia", vida, velocidad, fuerza, resistencia, usado);
+		super("Momia", vida, velocidad, fuerza, resistencia);
 		this.longitudVendajes = logitudVendajes;
 	}
 

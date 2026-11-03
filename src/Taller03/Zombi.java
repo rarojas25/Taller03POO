@@ -3,9 +3,8 @@ package Taller03;
 public class Zombi extends Monstruo implements Mordedor, Regenerable {
 	private int fuerzaDeMordida;
 
-	public Zombi(String tipo, int vida, int velocidad, int fuerza, int resistencia, boolean usado,
-			int fuerzaDeMordida) {
-		super("Zombi", vida, velocidad, fuerza, resistencia, usado);
+	public Zombi(int vida, int velocidad, int fuerza, int resistencia, int fuerzaDeMordida) {
+		super("Zombi", vida, velocidad, fuerza, resistencia);
 		this.fuerzaDeMordida = fuerzaDeMordida;
 	}
 	

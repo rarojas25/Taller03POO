@@ -4,9 +4,9 @@ public class HombreLobo extends Monstruo implements Mordedor, Furioso{
 	private int ferocidad;
 	private int faseLunar;
 	
-	public HombreLobo(String tipo, int vida, int velocidad, int fuerza, int resistencia, boolean usado, int ferocidad,
+	public HombreLobo(int vida, int velocidad, int fuerza, int resistencia, int ferocidad,
 			int faseLunar) {
-		super("HombreLobo", vida, velocidad, fuerza, resistencia, usado);
+		super("HombreLobo", vida, velocidad, fuerza, resistencia);
 		this.ferocidad = ferocidad;
 		this.faseLunar = faseLunar;
 	}

@@ -8,14 +8,14 @@ public abstract class Monstruo {
 	private int resistencia;
 	private boolean usado;
 	
-	public Monstruo(String tipo, int vida, int velocidad, int fuerza, int resistencia, boolean usado) {
+	public Monstruo(String tipo, int vida, int velocidad, int fuerza, int resistencia) {
 		super();
 		this.tipo = tipo;
 		this.vida = vida;
 		this.velocidad = velocidad;
 		this.fuerza = fuerza;
 		this.resistencia = resistencia;
-		this.usado = usado;
+		this.usado = false;
 	}
 	
 	public abstract double aceptar(VisitorMinijuego visitor);
