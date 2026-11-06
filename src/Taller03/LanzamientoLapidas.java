@@ -9,7 +9,7 @@ public class LanzamientoLapidas implements Minijuego {
 	
 	@Override
 	public String getDescripcion() {
-		return "lanza una lápida lo mas lejos posible";
+		return "lanza una lápida lo más lejos posible.";
 	}
 	
 	@Override

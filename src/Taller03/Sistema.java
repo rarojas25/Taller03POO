@@ -29,7 +29,7 @@ public class Sistema {
 		minijuegos.add(new SobrevivirAmanecer());
 		historial = new LinkedList<Jugada>();
 		puntajesMinijuegos = new int[minijuegos.size()];
-		monstruoActual = null;
+		nombreActual = null;
 	}
 	
 	private int convertirEntero(String texto) {
@@ -122,11 +122,12 @@ public class Sistema {
 	}
 	
 	public String validarNombre(String nombre) {
+		
 		if(nombre.isEmpty()){
 			return "El nombre no puede estar vacío.";
 		}
-		if(!nombre.contains(";")) {
-			return "El nombre no puede contener el cáracter ;";
+		if(nombre.contains(";")) {
+			return "El nombre no puede contener el carácter ; ";
 		}
 		return "";
 	}
@@ -180,7 +181,7 @@ public class Sistema {
 			}else {
 				estado = "[JUGADO - " + puntajesMinijuegos[i] + " pts]";
 			}
-			lineas.add(String.format("%-24 %s", minijuegos.get(i).getNombre(), estado));
+			lineas.add(String.format("%-24s %s", minijuegos.get(i).getNombre(), estado));
 		}
 		return lineas;
 	}
@@ -238,6 +239,10 @@ public class Sistema {
 	
 	public double calcularPotencial() {
 		return minijuegoActual.calcularPotencial(monstruoActual);
+	}
+	
+	public ArrayList<String> obtenerHabilidades() {
+		return obtenerNombresHabilidades(monstruoActual);
 	}
 	
 	private ArrayList<String> obtenerNombresHabilidades(Monstruo monstruo){
@@ -312,7 +317,7 @@ public class Sistema {
 				if(j > 0) {
 					linea += ", ";
 				}
-				linea += habilidades.get(i);
+				linea += habilidades.get(j);
 			}
 			if(monstruo.isUsado()) {
 				linea += " [USADO]";
@@ -328,7 +333,7 @@ public class Sistema {
 		ArrayList<String> lineas = new ArrayList<String>();
 		int num = 1;
 		for(Jugada jugada : historial) {
-			lineas.add(String.format("%d. %-24 | %-10s | Habilidades: %-11s | %d pts", num, jugada.getMinijuego(), jugada.getMonstruo(), jugada.getHabilidad(), jugada.getPuntaje()));
+			lineas.add(String.format("%d. %-24s | %-10s | Habilidad: %-11s | %d pts", num, jugada.getMinijuego(), jugada.getMonstruo(), jugada.getHabilidad(), jugada.getPuntaje()));
 			num++;
 		}
 		return lineas;
@@ -350,11 +355,12 @@ public class Sistema {
 	}
 	
 	public ArrayList<String> obtenerRanking(){
+		
 		ArrayList<Jugador> copia = new ArrayList<Jugador>(jugadores);
 		for(int i = 0; i < copia.size() - 1; i++) {
 			int mejor = i;
 			for(int j = i + 1; j < copia.size(); j++) {
-				if(vaAntes(copia.get(j), copia.get(j))) {
+				if(vaAntes(copia.get(j), copia.get(mejor))) {
 					mejor = j;
 				}
 			}
@@ -365,7 +371,7 @@ public class Sistema {
 		
 		ArrayList<String> lineas = new ArrayList<String>();
 		for(int i = 0; i < copia.size(); i++) {
-			lineas.add(String.format("%d. %-15 %d", i + 1, copia.get(i).getNombre(), copia.get(i).getPuntajeMax()));
+			lineas.add(String.format("%d. %-15s %d", i + 1, copia.get(i).getNombre(), copia.get(i).getPuntajeMax()));
 		}
 		return lineas;
 	}
@@ -404,4 +410,5 @@ public class Sistema {
 		}
 		return lineas;
 	}
+
 }
