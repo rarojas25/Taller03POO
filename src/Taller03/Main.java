@@ -1,3 +1,8 @@
+//Integrante 1: Rocío Azucena Rojas Robledo - 21.694.049-0 - rarojas25
+//Link repositorio: https://github.com/rarojas25/Taller03POO
+
+
+
 package Taller03;
 
 import java.io.BufferedWriter;
