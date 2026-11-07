@@ -3,6 +3,12 @@ package Taller03;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/*
+ * Lógica y datos del programa
+ * Crea y válida los objetos, maneja la sesión, calcula los puntajes y ordena el ranking.
+ * No usa Scanner, no lee archivos ni imprime: entrega todo con valores de retorno.
+ */
+
 public class Sistema {
 	
 	private ArrayList<Monstruo> monstruos;
@@ -18,7 +24,9 @@ public class Sistema {
 	private Minijuego minijuegoActual;
 	private Monstruo monstruoActual;
 	
-	
+	/*
+	 * Crea las listas vacías y agrega los 4 minijuegos. 
+	 */
 	public Sistema() {
 		monstruos = new ArrayList<Monstruo>();
 		jugadores = new ArrayList<Jugador>();
@@ -32,6 +40,9 @@ public class Sistema {
 		nombreActual = null;
 	}
 	
+	/*
+	 * Convierte un texto a entero. Si no es un número devuelve -1.
+	 */
 	private int convertirEntero(String texto) {
 		try {
 			return Integer.parseInt(texto.trim());
@@ -40,10 +51,17 @@ public class Sistema {
 		}
 	}
 	
+	/*
+	 * Indica si un valor está dentro del rango (incluye los extremos).
+	 */
 	private boolean enRango(int valor, int min, int max) {
 		return valor >= min && valor <= max;
 	}
 	
+	/*
+	 * Crea un monstruo con los campos de una línea de Monstruos.txt. 
+	 * Devuelve false si la línea no es válida.
+	 */
 	public boolean agregarMonstruo(String[] campos) {
 		String tipo = campos[0].trim();
 		int cantCampos;
@@ -57,6 +75,7 @@ public class Sistema {
 		if(campos.length != cantCampos) {
 			return false;
 		}
+		//valores[0] no se usa(es el tipo), los atributos parten desde el 1.
 		
 		int[] valores = new int[cantCampos];
 		for(int i = 1; i < cantCampos; i++) {
@@ -65,6 +84,8 @@ public class Sistema {
 				return false;
 			}
 		}
+		
+		//atributos base: vida, velocidad, fuerza y resistencia.
 		
 		if(!enRango(valores[1], 1, 200) || !enRango(valores[2], 1, 100) || !enRango(valores[3], 1, 100) || !enRango(valores[4], 1, 100)) {
 			return false;
@@ -96,6 +117,11 @@ public class Sistema {
 		}
 		return true;
 	}
+	
+	/*
+	 * Crea un jugador con los campos de una linea de Registros.txt.
+	 * Devuelve false si la línea no es válida.
+	 */
 	public boolean agregarJugador(String[] campos) {
 		if(campos.length != 2) {
 			return false;
@@ -113,14 +139,19 @@ public class Sistema {
 		return true;
 	}
 	
+	//Devuelve la cantidad de monstruos cargados.
 	public int cantMonstruos() {
 		return monstruos.size();
 	}
 	
+	//Devuleve la cantidad de jugadores cargados.
 	public int cantJugadores() {
 		return jugadores.size();
 	}
 	
+	/*
+	 * Revisa el nombre de usuario. Devuelve un texto vacío si es válido o el mensaje de error.
+	 */
 	public String validarNombre(String nombre) {
 		
 		if(nombre.isEmpty()){
@@ -132,6 +163,8 @@ public class Sistema {
 		return "";
 	}
 	
+	//Busca un jugador por su nombre. Devuelve null si no existe.
+	
 	private Jugador buscarJugador(String nombre) {
 		for(int i = 0; i < jugadores.size(); i++) {
 			if(jugadores.get(i).getNombre().equals(nombre)) {
@@ -141,6 +174,7 @@ public class Sistema {
 		return null;
 	}
 	
+	//Devuelve el récord del jugador, o -1 si no está registrado.
 	public int buscarRecord(String nombre) {
 		Jugador jugador = buscarJugador(nombre);
 		if(jugador == null) {
@@ -149,6 +183,9 @@ public class Sistema {
 		return jugador.getPuntajeMax();
 	}
 	
+	/*
+	 * Empieza una sesión nueva: minijuegos pendientes, monstruos disponibles y puntaje en 0.
+	 */
 	public void iniciarSesion(String nombre) {
 		nombreActual = nombre;
 		puntajeSesion = 0;
@@ -164,14 +201,19 @@ public class Sistema {
 		monstruoActual = null;
 	}
 	
+	//Indica si hay un jugador con la sesión iniciada.
 	public boolean haySesionActiva() {
 		return nombreActual != null;
 	}
 	
+	//Devuelve el nombre del jugador de la sesión actual.
 	public String getNombreActual() {
 		return nombreActual;
 	}
 	
+	/*
+	 * Devuelve una línea por minijuego indicado si está pendiente o jugado.
+	 */
 	public ArrayList<String> obtenerEstadoMinijuegos(){
 		ArrayList<String> lineas = new ArrayList<String>();
 		for(int i = 0; i < minijuegos.size(); i++) {
@@ -186,10 +228,13 @@ public class Sistema {
 		return lineas;
 	}
 	
+	//Devuelve el nombre del minijuego en esa posición. 
 	public String getNombreMinijuego(int idx) {
 		return minijuegos.get(idx).getNombre();
 	}
-	
+	/*
+	 * Elige un minijuego. Devuelve false si el índice es inválido o si ya se jugó.
+	 */
 	public boolean seleccionarMinijuego(int idx) {
 		if(idx < 0 || idx >= minijuegos.size()) {
 			return false;
@@ -201,10 +246,12 @@ public class Sistema {
 		return true;
 	}
 	
+	//Devuelve el nombre y la descripción del minijuego elegido.
 	public String getDescripcionMinijuegoActual() {
 		return minijuegoActual.getNombre() + ": " + minijuegoActual.getDescripcion();
 	}
 	
+	//Devuelve los monstruos que aún no se usan en la sesión.
 	private ArrayList<Monstruo> obtenerDisponibles(){
 		ArrayList<Monstruo> disponibles = new ArrayList<Monstruo>();
 		for(int i = 0; i < monstruos.size(); i++) {
@@ -215,10 +262,12 @@ public class Sistema {
 		return disponibles;
 	}
 	
+	//Devuelve cuántos monstruos quedan disponibles.
 	public int cantDisponibles() {
 		return obtenerDisponibles().size();
 	}
 	
+	//Devuelve la descripción de cada monstruo disponible.
 	public ArrayList<String> listarMonstruosDisponibles(){
 		ArrayList<String> lineas = new ArrayList<String>();
 		ArrayList<Monstruo> disponibles = obtenerDisponibles();
@@ -228,6 +277,10 @@ public class Sistema {
 		return lineas;
 	}
 	
+	/*
+	 * Elige un monstruo de los disponibles. 
+	 * Devuelve false si el índice es inválido.
+	 */
 	public boolean seleccionarMonstruo(int idx) {
 		ArrayList<Monstruo> disponibles = obtenerDisponibles();
 		if(idx < 0 || idx >= disponibles.size()) {
@@ -237,14 +290,16 @@ public class Sistema {
 		return true;
 	}
 	
+	// Calcula el potencial del monstruo elegido en el minijuego elegido.
 	public double calcularPotencial() {
 		return minijuegoActual.calcularPotencial(monstruoActual);
 	}
 	
+	//Devuelve los nombres de las habilidades del monstruo elegido.	
 	public ArrayList<String> obtenerHabilidades() {
 		return obtenerNombresHabilidades(monstruoActual);
 	}
-	
+	//Detecta con instanceof qué habilidades tiene un monstruo.
 	private ArrayList<String> obtenerNombresHabilidades(Monstruo monstruo){
 		
 		ArrayList<String> habilidades = new ArrayList<String>();
@@ -263,6 +318,7 @@ public class Sistema {
 		return habilidades;
 	}
 	
+	//Hace el cast a la interfaz de la habilidad y devuelve su mensaje.
 	public String ejecutarHabilidad(String habilidad) {
 		
 		if(habilidad.equals("Morder")) {
@@ -280,14 +336,20 @@ public class Sistema {
 		return "";
 	}
 	
+	//Indica si la habilidad usada es la premiada por el minijuego.
 	public boolean habilidadEfectiva(String habilidad) {
 		return habilidad.equals(minijuegoActual.getHabilidadPremiada());
 	}
 	
+	/*
+	 * Calcula el puntaje, lo guarda en el historial y
+	 *  marca el monstruo y el minijuego como usados. 
+	 *  Si no se usó habilidad se envía "Ninguna".
+	 */
 	public int registrarJugada(String habilidad) {
 		double potencial = minijuegoActual.calcularPotencial(monstruoActual);
 	
-	
+	//el multiplicador sube a 1.5 solo si la habilidad es la premiada
 	double multiplicador = 1.0;
 	if(habilidadEfectiva(habilidad)) {
 		multiplicador = 1.5;
@@ -306,6 +368,10 @@ public class Sistema {
 	
 	}
 	
+	/*
+	 * Devuelve una línea por monstruo con sus atributos, 
+	 * sus habilidades y si ya fue usado.
+	 */
 	public ArrayList<String> obtenerCatalogo(){
 		ArrayList<String> lineas = new ArrayList<String>();
 		for(int i = 0; i < monstruos.size(); i++) {
@@ -329,6 +395,7 @@ public class Sistema {
 		return lineas;
 	}
 	
+	//Devuelve una línea por jugada, en el orden en que se jugaron.
 	public ArrayList<String> obtenerHistorial(){
 		ArrayList<String> lineas = new ArrayList<String>();
 		int num = 1;
@@ -339,14 +406,21 @@ public class Sistema {
 		return lineas;
 	}
 	
+	// Devuelve el puntaje acumulado de la sesión.
 	public int getPuntajeSesion() {
 		return puntajeSesion;
 	}
 	
+	//Indica si ya se jugó al menos un minijuego en la sesión.
 	public boolean hayJugadas() {
 		return !historial.isEmpty();
 	}
 	
+	/*
+	 *  Indica
+	 *   si el jugador a va antes que el b en el ranking 
+	 *   (mayor puntaje y, si empatan, por nombre).
+	 */
 	private boolean vaAntes(Jugador a, Jugador b) {
 		if(a.getPuntajeMax() != b.getPuntajeMax()) {
 			return a.getPuntajeMax() > b.getPuntajeMax();
@@ -354,8 +428,13 @@ public class Sistema {
 		return a.getNombre().compareToIgnoreCase(b.getNombre()) < 0;
 	}
 	
+	/*
+	 *  Devuelve el ranking ordenado de mayor a menor puntaje
+	 *   (ordenamiento propio).
+	 */
 	public ArrayList<String> obtenerRanking(){
 		
+		// se ordena una copia con selección directa (sin Collections.sort)
 		ArrayList<Jugador> copia = new ArrayList<Jugador>(jugadores);
 		for(int i = 0; i < copia.size() - 1; i++) {
 			int mejor = i;
@@ -376,6 +455,10 @@ public class Sistema {
 		return lineas;
 	}
 	
+	/*
+	 * Termina la sesión y actualiza los récords. Devuelve 0 si no jugó, 1 si es nuevo,
+	 *  2 si superó su récord y 3 si no lo superó. 
+	 */
 	public int terminarSesion() {
 		int resultado;
 		if(!hayJugadas()) {
@@ -399,10 +482,15 @@ public class Sistema {
 		return resultado;
 	}
 	
+	// Devuelve el récord que tenía el jugador antes de terminar la sesión.
 	public int getRecordAnterior() {
 		return recordAnterior;
 	}
 	
+	/*
+	 * Devuelve las líneas (Jugador;PuntajeMaximo) 
+	 * que Main escribe en Registros.txt.
+	 */
 	public ArrayList<String> obtenerRegistros(){
 		ArrayList<String> lineas = new ArrayList<String>();
 		for(int i = 0; i < jugadores.size(); i++) {

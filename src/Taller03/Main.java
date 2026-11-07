@@ -13,11 +13,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Clase principal: entrada y salida.
+ * Lee el teclado y los archivos, muestra los menús y escribe Registros.txt.
+ *  La lógica está en Sistema.
+ */
 public class Main {
 	
 		private static Scanner teclado;
 		private static Sistema sistema;
 		
+		/*
+		 * Carga los archivos y repite el inicio de sesión y el menú
+		 * principal hasta que el jugador salga.
+		 */
 		public static void main(String[]args) {
 			teclado = new Scanner(System.in);
 			sistema = new Sistema();
@@ -45,6 +54,10 @@ public class Main {
 			System.out.println("¡Hasta la próxima!");
 		}
 
+		/*
+		 * Lee Monstruos.txt, separa cada línea con split y la envía a Sistema. 
+		 * Informa las líneas descartadas.
+		 */
 		private static void cargarMonstruos() {
 			try {
 				Scanner lector = new Scanner(new File("Monstruos.txt"));
@@ -60,7 +73,10 @@ public class Main {
 				System.out.println("[!] No se encontró el archivo Monstruos.txt");
 			}
 		}
-
+		
+		/*
+		 * Lee Registros.txt de la misma forma. Si no existe, se parte con la lista vacía.
+		 */
 		private static void cargarRegistros() {
 			try {
 				Scanner lector = new Scanner(new File("Registros.txt"));
@@ -77,6 +93,9 @@ public class Main {
 			}
 		}
 
+		/*
+		 * Pide el nombre de usuario, da la bienvenida y empieza la sesión.
+		 */
 		private static void iniciarSesion() {
 			String nombre = "";
 			boolean valido = false;
@@ -99,6 +118,9 @@ public class Main {
 			sistema.iniciarSesion(nombre);
 		}
 
+		/*
+		 * Lee una línea del teclado. Si ya no hay entrada, cierra la sesión y termina el programa.
+		 */
 		private static String leerLinea() {
 			if(!teclado.hasNextLine()) {
 				System.out.println("\nNo hay más entrada. Cerrando el programa.");
@@ -110,6 +132,9 @@ public class Main {
 			return teclado.nextLine().trim();
 		}
 		
+		/*
+		 * Muestra el menú principal. Devuelve true si el jugador eligió salir del programa.
+		 */
 		private static boolean menuPrincipal() {
 			
 			while(true) {
@@ -145,7 +170,10 @@ public class Main {
 				}
 			}
 		}
-
+		
+		/*
+		 * Muestra los minijuegos y deja elegir uno. Vuelve al menú al terminar la jugada con 0.
+		 */
 		private static void jugarMinijuego() {
 			while(true) {
 				
@@ -176,6 +204,11 @@ public class Main {
 				}
 			}
 		}
+		
+		/*
+		 * Pide el monstruo y la habilidad, muestra el potencial y registra el puntaje. 
+		 * Devuelve true si hay que volver al menú y false si el jugador elige volver a los minijuegos.
+		 */
 
 		private static boolean elegirMonstruoYJugar() {
 			System.out.println("\n" +  sistema.getDescripcionMinijuegoActual());
@@ -225,6 +258,7 @@ public class Main {
 			return true;
 		}
 
+		//Muestra todos los monstruos con sus atributos y habilidades.
 		private static void verCatalogo() {
 			System.out.println("\n------ CATÁLOGO DE MONSTRUOS ------");
 			ArrayList<String> catalogo = sistema.obtenerCatalogo();
@@ -233,6 +267,7 @@ public class Main {
 			}
 		}
 
+		//Muestra el historial de la sesión y el puntaje acumulado.
 		private static void verHistorial() {
 			System.out.println("\n------ HISTORIAL DE LA SESIÓN ------");
 			ArrayList<String> historial = sistema.obtenerHistorial();
@@ -246,6 +281,8 @@ public class Main {
 			System.out.println("Puntaje acumulado: " + sistema.getPuntajeSesion() + " pts");
 		}
 
+		//Muestra el ranking de jugadores
+		
 		private static void verRanking() {
 			System.out.println("\n------ RANKING ------");
 			ArrayList<String> ranking = sistema.obtenerRanking();
@@ -258,6 +295,9 @@ public class Main {
 			}
 		}
 
+		/*
+		 * Termina la sesión, muestra el resultado y guarda Registros.txt si corresponde.
+		 */
 		private static void terminarSesion() {
 			int puntaje = sistema.getPuntajeSesion();
 			System.out.println("\nSesión terminada. Puntaje total: " + puntaje + " puntos.");
@@ -280,6 +320,11 @@ public class Main {
 				System.out.println("Registros guardados en Registros.txt.");
 			}
 		}
+		
+		/*
+		 * Escribe Registros.txt con las líneas que entrega Sistema. 
+		 * Devuelve false si no se pudo escribir. 
+		 */
 
 		private static boolean guardarRegistros() {
 			try {
@@ -298,6 +343,9 @@ public class Main {
 			}
 		}
 
+		/*
+		 * Pide un número entre min y max. Repite hasta que sea válido.
+		 */
 		private static int leerEntero(int min, int max) {
 			while(true) {
 				
